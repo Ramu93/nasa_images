@@ -26,9 +26,9 @@ export async function search(searchKey: string): Promise<Result[]> {
 
 export async function getMetadata(nasaId: string): Promise<any> {
   const url = new UrlBuilder().path(`metadata/${nasaId}`).noParams().build();
-
   try {
-    const response = await get(url);
+    const jsonPath = await get(url);
+    const response = await get(jsonPath.location);
     return response;
   } catch (error) {
     console.error(error);

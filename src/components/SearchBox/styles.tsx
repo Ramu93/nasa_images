@@ -29,13 +29,10 @@ export const Input = styled.input`
   line-height: 1;
   padding-left: 20px;
   flex: 7;
+  outline: none;
 
   &::placeholder {
     color: #e16868;
-  }
-
-  &:focus: {
-    outline: none;
   }
 `;
 
@@ -45,4 +42,11 @@ export const ButtonContainer = styled.div`
   align-items: center;
   flex: 1;
   cursor: pointer;
+`;
+
+export const StickyContainer = styled.div`
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 999;
 `;

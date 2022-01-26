@@ -1,4 +1,5 @@
 export const theme = {
   primary: "#ff7575",
-  background: "#ffd8d8",
+  background: "#363636",
+  modalBg: "#363636",
 };

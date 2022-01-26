@@ -1,25 +1,26 @@
-import React, { FC} from "react";
-import './styles.css'
-import { useNavigate } from "react-router-dom";
+import React, { FC } from "react";
+import {
+  CloseButton,
+  ModalContainer,
+  ModalContent,
+  ModalHeader,
+} from "./styles";
 
 type ModalProps = {
-  description: string;
+  visible: boolean;
+  onClose: Function;
+  header: string;
 };
 
-const Modal: FC<ModalProps> = ({ description }) => {
-  const navigate = useNavigate();
-
-  const goBack = () => {
-    navigate(-1);
-  };
-
+const Modal: FC<ModalProps> = ({ visible, onClose, children, header }) => {
   return (
-    <div id="myModal" className="modal">
-  <div className="modal-content">
-    <span className="close">&times;</span>
-        <p>{ description}</p>
-  </div>
-</div>
+    <ModalContainer visible={visible} onClick={() => onClose()}>
+      <ModalContent>
+        <CloseButton onClick={() => onClose()}>&times;</CloseButton>
+        <ModalHeader>{header}</ModalHeader>
+        {children}
+      </ModalContent>
+    </ModalContainer>
   );
 };
 

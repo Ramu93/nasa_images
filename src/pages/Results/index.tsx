@@ -1,19 +1,20 @@
-import React, { FC, useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect } from "react";
 
 import { ResultsContainer, Loader } from "./styles";
 import SearchBox from "../../components/SearchBox";
 import { getMetadata, search } from "../../services/query";
 import { Result } from "./result.interface";
 import ListItem from "../../components/ListItem";
+import Modal from "../../components/Modal";
+import { StickyContainer } from "../../components/SearchBox/styles";
 
-type ResultsProps = {};
-
-const Results: FC<ResultsProps> = ({}) => {
+const Results = () => {
   const [searchKey, setSearchKey] = useState<string>("test");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [results, setResults] = useState<Result[]>([]);
   const [selectedItem, setSelectedItem] = useState<string>();
-  const [modalData, setModalData] = useState<any>();
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const [modalData, setModalData] = useState<Object>();
 
   const fetchResults = async () => {
     setIsLoading(true);
@@ -26,6 +27,7 @@ const Results: FC<ResultsProps> = ({}) => {
     if (selectedItem) {
       const data = await getMetadata(selectedItem);
       setModalData(data);
+      setIsModalVisible(true);
     }
   };
 
@@ -40,11 +42,13 @@ const Results: FC<ResultsProps> = ({}) => {
 
   return (
     <>
-      <SearchBox
-        onChange={setSearchKey}
-        value={searchKey}
-        onSearch={fetchResults}
-      />
+      <StickyContainer>
+        <SearchBox
+          onChange={setSearchKey}
+          value={searchKey}
+          onSearch={fetchResults}
+        />
+      </StickyContainer>
       <div>{isLoading && <Loader />}</div>
       <ResultsContainer>
         {results.map((result, index) => (
@@ -58,6 +62,16 @@ const Results: FC<ResultsProps> = ({}) => {
           />
         ))}
       </ResultsContainer>
+      <Modal
+        visible={isModalVisible}
+        onClose={() => {
+          setIsModalVisible(false);
+          setModalData({});
+        }}
+        header="Meta"
+      >
+        {JSON.stringify(modalData)}
+      </Modal>
     </>
   );
 };
